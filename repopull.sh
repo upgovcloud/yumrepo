@@ -14,7 +14,7 @@
   catRepoFile() {
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
-      sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << EOF
+      sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << 'EOF'
 [${TEAMNAME}]
 baseurl = file:///s3repo/repo/
 enabled = 1
@@ -24,6 +24,7 @@ repo_gpgcheck = 0
 s3_enabled=1
 EOF
       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
+      runit "Removing whitespace from /etc/yum.repos.d/${TEAMNAME}.repo" "${SED} -i -e 's/[ \t]*//' /etc/yum.repos.d/${TEAMNAME}.repo"
     else
       echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
     fi
@@ -61,7 +62,7 @@ EOF
       echo "Installing AWS CLI 2......"
       echo 'Downloading AWS CLI......' 
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      runit 'Unzip awscliv2.zip' 'unzip awscliv2.zip'
+      runit 'Unzip awscliv2.zip' 'unzip -o awscliv2.zip'
       runit 'Install aws' 'sudo ./aws/install'
     fi
     echo ''
