@@ -27,12 +27,14 @@ EOF
     else
       echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
     fi
+    echo ''
   }
 
   configureAWS() {
     aws configure set aws_access_key_id ${ACCESSKEY}
     aws configure set aws_secret_access_key ${SECRETKEY}
     aws configure set region ${REGION}
+    echo ''
   }
 
   getVars() {
@@ -44,6 +46,7 @@ EOF
         echo 'The value for '${i}' is: ' $( eval echo \${$i[0]} )
       fi
     done
+    echo ''
   }
 
   installAWSCLI2() {
@@ -66,37 +69,15 @@ EOF
 
   removeAWSCLI1() {
     echo "Removing AWS CLI 1......"
-
-    # REMOVE ANY LOCAL AWS-CLI
-      echo 'checking to see if /usr/local/aws-cli/ is installed.....'
-      if [ -f /usr/local/aws-cli/ ] ; then
-        echo "/usr/local/aws-cli/ was found."
-        runit 'Remove /usr/local/aws-cli/' 'sudo rm -rf /usr/local/aws-cli/'
-        echo "/usr/local/aws-cli/ has been uninstalled."
+    for i in "${AWSVARS[@]}" ; do
+      if [ -f "${i}" ] ; then
+        echo "${i} was found."
+        runit "Remove ${i}" "sudo rm -rf ${i}"
+        echo "${i} has been uninstalled."
       else
-        echo "/usr/local/aws-cli/ was not installed"
+        echo "${i} was not installed"
       fi
-
-    # REMOVE ANY LOCAL BIN
-      echo 'checking to see if /usr/local/aws is installed.....'
-      if [ -f /usr/local/aws ] ; then
-        echo "/usr/local/aws was found."
-        runit 'Remove /usr/local/aws' 'sudo rm -rf /usr/local/aws'
-        echo "/usr/local/aws has been uninstalled."
-      else
-        echo "/usr/local/aws was not installed"
-      fi
-
-    # REMOVE ANY LOCAL BIN AWS
-      echo 'checking to see if /usr/local/bin/aws is installed.....'
-      if [ -f /usr/local/bin/aws ] ; then
-        echo "/usr/local/bin/aws was found."
-        runit 'Remove /usr/local/bin/aws' 'sudo rm -rf /usr/local/bin/aws'
-        echo "/usr/local/bin/aws has been uninstalled."
-      else
-        echo "/usr/local/bin/aws was not installed"
-      fi
-
+    done
     echo 'AWS CLI 1 Removed.'
     echo ''
   }
@@ -113,6 +94,7 @@ EOF
   setupInfrastructure() {
     # SETUP LOCAL
       runit 'Create /s3repo/repo directory' 'sudo mkdir -p /s3repo/repo'
+      echo ''
   }
 
   setupRepo() {
@@ -122,10 +104,12 @@ EOF
       runit 'Rebuid YUM Repo Cache' 'yum clean all' 
       runit 'Update YUM Repolist' 'yum -y update'
       runit 'Upgrade YUM Packages' 'yum -y upgrade'
+      echo ''
   }
 
 ##  ---------- VARIABLES AND ARRAYS ----------  ##
   # Assign Initial Variables
+    AWSVARS=( '~/aws', '/usr/local/aws-cli/', '/usr/local/aws', '/usr/local/bin/aws' )
     GETVARS=( 'ACCESSKEY' 'SECRETKEY' 'TEAMNAME' )
     REGION='us-gov-west-1'
     SED=`which sed`
