@@ -14,7 +14,7 @@
   catRepoFile() {
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
-      cat > /etc/yum.repos.d/${TEAMNAME}.repo << 'EOF'
+      sudo cat > /etc/yum.repos.d/${TEAMNAME}.repo << 'EOF'
         [${TEAMNAME}]
         baseurl = file:///s3repo/repo/
         enabled = 1
