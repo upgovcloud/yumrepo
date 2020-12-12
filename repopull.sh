@@ -63,7 +63,7 @@ EOF
       echo 'Downloading AWS CLI......' 
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       runit 'Unzip awscliv2.zip' 'unzip -o awscliv2.zip'
-      runit 'Install aws' 'sudo ./aws/install'
+      runit 'Install aws' 'sudo ./aws/install --update'
     fi
     echo ''
   }
