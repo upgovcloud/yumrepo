@@ -15,13 +15,13 @@
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
       sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << EOF
-        [${TEAMNAME}]
-        baseurl = file:///s3repo/repo/
-        enabled = 1
-        gpgcheck = 0
-        name = ${TEAMNAME}
-        repo_gpgcheck = 0
-        s3_enabled=1
+[${TEAMNAME}]
+baseurl = file:///s3repo/repo/
+enabled = 1
+gpgcheck = 0
+name = ${TEAMNAME}
+repo_gpgcheck = 0
+s3_enabled=1
 EOF
       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
     else
@@ -101,12 +101,12 @@ EOF
     fi
   }
 
-  # setupInfrastructure() {
-  #   # SETUP LOCAL
-  #     runit 'Update YUM Repolist' 'yum -y update'
-  #     runit 'Upgrade YUM Packages' 'yum -y upgrade'
-  #     runit 'Create /s3repo/repo directory' 'mkdir -p /s3repo/repo'
-  # }
+  setupInfrastructure() {
+    # SETUP LOCAL
+      runit 'Update YUM Repolist' 'yum -y update'
+      runit 'Upgrade YUM Packages' 'yum -y upgrade'
+      runit 'Create /s3repo/repo directory' 'mkdir -p /s3repo/repo'
+  }
 
   # setupRepo() {
   #   # SETUP YUM REPO
@@ -137,7 +137,7 @@ EOF
   clear
   getVars
   catRepoFile
-  # setupInfrastructure
+  setupInfrastructure
   # removeAWSCLI1
   # installAWSCLI2
   # configureAWS
