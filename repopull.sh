@@ -47,30 +47,30 @@ EOF
     done
   }
 
-  # installAWSCLI2() {
-  #   # INSTALL AWS 2
-  #   if [ -f /usr/local/bin/aws ] ; then
-  #     removeAWSCLI1
-  #   else if [ -f /usr/local/bin/aws2 ] ; then
-  #     echo "AWS CLI 2 is already Installed."
-  #   else
-  #     echo 'Navigate to $HOME directory......'
-  #       cd ~
-  #     echo "Installing AWS CLI 2......"
-  #     echo 'Downloading AWS CLI......' 
-  #       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-  #     runit 'Unzip awscliv2.zip' 'unzip awscliv2.zip'
-  #     runit 'Install aws' 'sudo ./aws/install'
-  #   fi
-  #   echo ''
-  # }
+  installAWSCLI2() {
+    # INSTALL AWS 2
+    if [ -f /usr/local/bin/aws ] ; then
+      removeAWSCLI1
+    else if [ -f /usr/local/bin/aws2 ] ; then
+      echo "AWS CLI 2 is already Installed."
+    else
+      echo 'Navigate to $HOME directory......'
+        cd ~
+      echo "Installing AWS CLI 2......"
+      echo 'Downloading AWS CLI......' 
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      runit 'Unzip awscliv2.zip' 'unzip awscliv2.zip'
+      runit 'Install aws' 'sudo ./aws/install'
+    fi
+    echo ''
+  }
 
   removeAWSCLI1() {
     echo "Removing AWS CLI 1......"
 
     # REMOVE ANY LOCAL BIN
       echo 'checking to see if /usr/local/aws is installed.....'
-      if [ ! -f /usr/local/aws ] ; then
+      if [ -f /usr/local/aws ] ; then
         echo "/usr/local/aws was found."
         runit 'Remove /usr/local/aws' 'sudo rm -rf /usr/local/aws'
         echo "/usr/local/aws has been uninstalled."
@@ -80,9 +80,9 @@ EOF
 
     # REMOVE ANY LOCAL BIN AWS
       echo 'checking to see if /usr/local/bin/aws is installed.....'
-      if [ ! -f /usr/local/bin/aws ] ; then
+      if [ -f /usr/local/bin/aws ] ; then
         echo "/usr/local/bin/aws was found."
-        runit 'Remove /usr/local/bin/aws' 'sudo rm /usr/local/bin/aws'
+        runit 'Remove /usr/local/bin/aws' 'sudo rm -rf /usr/local/bin/aws'
         echo "/usr/local/bin/aws has been uninstalled."
       else
         echo "/usr/local/bin/aws was not installed"
@@ -103,7 +103,7 @@ EOF
 
   setupInfrastructure() {
     # SETUP LOCAL
-      runit 'Create /s3repo/repo directory' 'mkdir -p /s3repo/repo'
+      runit 'Create /s3repo/repo directory' 'sudo mkdir -p /s3repo/repo'
   }
 
   # setupRepo() {
@@ -139,6 +139,6 @@ EOF
   catRepoFile
   setupInfrastructure
   removeAWSCLI1
-  # installAWSCLI2
+  installAWSCLI2
   # configureAWS
   # setupRepo
