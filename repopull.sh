@@ -65,32 +65,32 @@ EOF
   #   echo ''
   # }
 
-  # removeAWSCLI1() {
-  #   echo "Removing AWS CLI 1......"
+  removeAWSCLI1() {
+    echo "Removing AWS CLI 1......"
 
-  #   # REMOVE ANY LOCAL BIN
-  #     echo 'checking to see if /usr/local/aws is installed.....'
-  #     if [ ! -f /usr/local/aws ] ; then
-  #       echo "/usr/local/aws was found."
-  #       runit 'Remove /usr/local/aws' 'sudo rm -rf /usr/local/aws'
-  #       echo "/usr/local/aws has been uninstalled."
-  #     else
-  #       echo "/usr/local/aws was not installed"
-  #     fi
+    # REMOVE ANY LOCAL BIN
+      echo 'checking to see if /usr/local/aws is installed.....'
+      if [ ! -f /usr/local/aws ] ; then
+        echo "/usr/local/aws was found."
+        runit 'Remove /usr/local/aws' 'sudo rm -rf /usr/local/aws'
+        echo "/usr/local/aws has been uninstalled."
+      else
+        echo "/usr/local/aws was not installed"
+      fi
 
-  #   # REMOVE ANY LOCAL BIN AWS
-  #     echo 'checking to see if /usr/local/bin/aws is installed.....'
-  #     if [ ! -f /usr/local/bin/aws ] ; then
-  #       echo "/usr/local/bin/aws was found."
-  #       runit 'Remove /usr/local/bin/aws' 'sudo rm /usr/local/bin/aws'
-  #       echo "/usr/local/bin/aws has been uninstalled."
-  #     else
-  #       echo "/usr/local/bin/aws was not installed"
-  #     fi
+    # REMOVE ANY LOCAL BIN AWS
+      echo 'checking to see if /usr/local/bin/aws is installed.....'
+      if [ ! -f /usr/local/bin/aws ] ; then
+        echo "/usr/local/bin/aws was found."
+        runit 'Remove /usr/local/bin/aws' 'sudo rm /usr/local/bin/aws'
+        echo "/usr/local/bin/aws has been uninstalled."
+      else
+        echo "/usr/local/bin/aws was not installed"
+      fi
 
-  #   echo 'AWS CLI 1 Removed.'
-  #   echo ''
-  # }
+    echo 'AWS CLI 1 Removed.'
+    echo ''
+  }
 
   runit() {
     echo "Attempting ${1}......"
@@ -103,8 +103,6 @@ EOF
 
   setupInfrastructure() {
     # SETUP LOCAL
-      runit 'Update YUM Repolist' 'yum -y update'
-      runit 'Upgrade YUM Packages' 'yum -y upgrade'
       runit 'Create /s3repo/repo directory' 'mkdir -p /s3repo/repo'
   }
 
@@ -113,6 +111,8 @@ EOF
   #     runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo/repo'
   #     runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo/repo && aws s3 sync s3://${TEAMNAME}repo . "           
   #     runit 'Rebuid YUM Repo Cache' 'yum clean all' 
+      # runit 'Update YUM Repolist' 'yum -y update'
+      # runit 'Upgrade YUM Packages' 'yum -y upgrade'
   # }
 
 ##  ---------- VARIABLES AND ARRAYS ----------  ##
@@ -138,7 +138,7 @@ EOF
   getVars
   catRepoFile
   setupInfrastructure
-  # removeAWSCLI1
+  removeAWSCLI1
   # installAWSCLI2
   # configureAWS
   # setupRepo
