@@ -14,7 +14,7 @@
   catRepoFile() {
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
-      sudo cat > /etc/yum.repos.d/${TEAMNAME}.repo << 'EOF'
+      sudo cat > ${TEAMNAME}.repo << 'EOF'
         [${TEAMNAME}]
         baseurl = file:///s3repo/repo/
         enabled = 1
@@ -23,6 +23,7 @@
         repo_gpgcheck = 0
         s3_enabled=1
 EOF
+      sudo mv ${TEAMNAME}.repo /etc/yum.repos.d/${TEAMNAME}.repo
       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
     else
       echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
