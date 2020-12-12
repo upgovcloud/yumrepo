@@ -30,11 +30,11 @@ EOF
   }
 
 
-#   configureAWS() {
-#     aws configure set aws_access_key_id ${ACCESSKEY}
-#     aws configure set aws_secret_access_key ${SECRETKEY}
-#     aws configure set region ${REGION}
-#   }
+  configureAWS() {
+    aws configure set aws_access_key_id ${ACCESSKEY}
+    aws configure set aws_secret_access_key ${SECRETKEY}
+    aws configure set region ${REGION}
+  }
 
   getVars() {
     for i in "${GETVARS[@]}" ; do
@@ -106,14 +106,14 @@ EOF
       runit 'Create /s3repo/repo directory' 'sudo mkdir -p /s3repo/repo'
   }
 
-  # setupRepo() {
-  #   # SETUP YUM REPO
-  #     runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo/repo'
-  #     runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo/repo && aws s3 sync s3://${TEAMNAME}repo . "           
-  #     runit 'Rebuid YUM Repo Cache' 'yum clean all' 
-      # runit 'Update YUM Repolist' 'yum -y update'
-      # runit 'Upgrade YUM Packages' 'yum -y upgrade'
-  # }
+  setupRepo() {
+    # SETUP YUM REPO
+      runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo/repo'
+      runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo/repo && aws s3 sync s3://${TEAMNAME}repo . "           
+      runit 'Rebuid YUM Repo Cache' 'yum clean all' 
+      runit 'Update YUM Repolist' 'yum -y update'
+      runit 'Upgrade YUM Packages' 'yum -y upgrade'
+  }
 
 ##  ---------- VARIABLES AND ARRAYS ----------  ##
   # Assign Initial Variables
@@ -140,5 +140,5 @@ EOF
   setupInfrastructure
   removeAWSCLI1
   installAWSCLI2
-  # configureAWS
-  # setupRepo
+  configureAWS
+  setupRepo
