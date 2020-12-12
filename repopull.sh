@@ -122,7 +122,7 @@
     SED=`which sed`
 
   # Assign Variables Passed Into ./setup.sh
-    while getopts "a:s:" opt ; do
+    while getopts "a:s:t:" opt ; do
       [[ ${OPTARG} == -*  ]] && { echo "Missing argument for -${opt}" ; exit 1 ; }
       case ${opt} in
         a) ACCESSKEY=${OPTARG};;
