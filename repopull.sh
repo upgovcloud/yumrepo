@@ -51,7 +51,7 @@ EOF
     # INSTALL AWS 2
     if [ -f /usr/local/bin/aws ] ; then
       removeAWSCLI1
-    else if [ -f /usr/local/bin/aws2 ] ; then
+    elif [ -f /usr/local/bin/aws2 ] ; then
       echo "AWS CLI 2 is already Installed."
     else
       echo 'Navigate to $HOME directory......'
