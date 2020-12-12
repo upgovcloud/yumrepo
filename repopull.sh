@@ -10,24 +10,24 @@
 
 ##  ---------- FUNCTIONS ----------  ##
 
-  # CAT NEW YUM REPO FILE
-#   catRepoFile() {
-#     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
-#     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
-#       cat > /etc/yum.repos.d/${TEAMNAME}.repo << 'EOF'
-#         [${TEAMNAME}]
-#         baseurl = file:///s3repo/repo/
-#         enabled = 1
-#         gpgcheck = 0
-#         name = ${TEAMNAME}
-#         repo_gpgcheck = 0
-#         s3_enabled=1
-# EOF
-#       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
-#     else
-#       echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
-#     fi
-#   }
+  CAT NEW YUM REPO FILE
+  catRepoFile() {
+    echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
+    if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
+      cat > /etc/yum.repos.d/${TEAMNAME}.repo << 'EOF'
+        [${TEAMNAME}]
+        baseurl = file:///s3repo/repo/
+        enabled = 1
+        gpgcheck = 0
+        name = ${TEAMNAME}
+        repo_gpgcheck = 0
+        s3_enabled=1
+EOF
+      echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
+    else
+      echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
+    fi
+  }
 
 
 #   configureAWS() {
@@ -136,10 +136,9 @@
 ##  ---------- MAIN ----------  ##
   clear
   getVars
-  # catRepoFile
+  catRepoFile
   # setupInfrastructure
   # removeAWSCLI1
   # installAWSCLI2
   # configureAWS
   # setupRepo
-  sleep 20
