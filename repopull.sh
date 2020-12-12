@@ -29,7 +29,6 @@ EOF
     fi
   }
 
-
   configureAWS() {
     aws configure set aws_access_key_id ${ACCESSKEY}
     aws configure set aws_secret_access_key ${SECRETKEY}
@@ -67,6 +66,16 @@ EOF
 
   removeAWSCLI1() {
     echo "Removing AWS CLI 1......"
+
+    # REMOVE ANY LOCAL AWS-CLI
+      echo 'checking to see if /usr/local/aws-cli/ is installed.....'
+      if [ -f /usr/local/aws-cli/ ] ; then
+        echo "/usr/local/aws-cli/ was found."
+        runit 'Remove /usr/local/aws-cli/' 'sudo rm -rf /usr/local/aws-cli/'
+        echo "/usr/local/aws-cli/ has been uninstalled."
+      else
+        echo "/usr/local/aws-cli/ was not installed"
+      fi
 
     # REMOVE ANY LOCAL BIN
       echo 'checking to see if /usr/local/aws is installed.....'
