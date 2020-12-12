@@ -142,4 +142,4 @@
   # installAWSCLI2
   # configureAWS
   # setupRepo
-  read -n 1 -s -r -p "Press any key to continue"
+  sleep 20
