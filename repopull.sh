@@ -93,9 +93,8 @@ EOF
 
   setupInfrastructure() {
     # SETUP LOCAL
-      runit 'Update and Upgrade YUM Caches' "sudo yum -y update && sudo yum -y upgrade"
       runit 'Install createrepo and wget' 'sudo yum -y install createrepo wget'
-      runit 'Create /s3repo/repo directory' 'sudo mkdir -p /s3repo/repo'
+      runit "Create /${TEAMNAME} directory" "sudo mkdir -p /${TEAMNAME}"
       echo ''
   }
 
@@ -111,7 +110,7 @@ EOF
 
 ##  ---------- VARIABLES AND ARRAYS ----------  ##
   # Assign Initial Variables
-    AWSVARS=( "${HOME}/aws" '/usr/local/aws-cli/' '/usr/local/aws' '/usr/local/bin/aws' )
+    AWSVARS=( "${HOME}/aws"  '/usr/bin/aws' '/usr/local/aws-cli/' '/usr/local/aws' '/usr/local/bin/aws' )
     GETVARS=( 'ACCESSKEY' 'SECRETKEY' 'TEAMNAME' )
     REGION='us-gov-west-1'
     SED=`which sed`
