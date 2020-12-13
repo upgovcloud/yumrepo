@@ -12,11 +12,11 @@
 
   catRepoFile() {
   # CAT NEW YUM REPO FILE    
-    echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
+    echo "Checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed....."
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
       sudo tee "/etc/yum.repos.d/${TEAMNAME}.repo" > /dev/null <<EOF
 [${TEAMNAME}]
-baseurl = file:///s3repo/
+baseurl = file:///${TEAMNAME}/
 enabled = 1
 gpgcheck = 0
 name = ${TEAMNAME}
@@ -75,11 +75,7 @@ EOF
         echo "${i} was found."
         echo "Remove ${i}" "sudo rm -rf ${i}"
       else
-        echo "File ${i} was not installed."
-        if [[ -f "${i}" || -d "${i}" ]] ; then
-          echo "File ${i} was found."
-        echo "Remove ${i}" "sudo rm -rf ${i}"
-        fi
+        echo "${i} was not installed."
       fi
     done
     echo 'AWS CLI 1 Removed.'
@@ -115,7 +111,7 @@ EOF
 
 ##  ---------- VARIABLES AND ARRAYS ----------  ##
   # Assign Initial Variables
-    AWSVARS=( '~/aws', '/usr/local/aws-cli/', '/usr/local/aws', '/usr/local/bin/aws' )
+    AWSVARS=( "${HOME}/aws" '/usr/local/aws-cli/' '/usr/local/aws' '/usr/local/bin/aws' )
     GETVARS=( 'ACCESSKEY' 'SECRETKEY' 'TEAMNAME' )
     REGION='us-gov-west-1'
     SED=`which sed`
@@ -138,6 +134,6 @@ EOF
   setupInfrastructure  
   catRepoFile
   removeAWSCLI1
-  installAWSCLI2
-  configureAWS
-  setupRepo
+  # installAWSCLI2
+  # configureAWS
+  # setupRepo
