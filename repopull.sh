@@ -73,7 +73,7 @@ EOF
       echo "Looking for ${i}......"
       if [[ -f "${i}" ]] || [[ -d "${i}" ]] ; then
         echo "${i} was found."
-        echo "Remove ${i}" "sudo rm -rf ${i}"
+        runit "Remove ${i}" "sudo rm -rf ${i}"
       else
         echo "${i} was not installed."
       fi
