@@ -14,7 +14,7 @@
   # CAT NEW YUM REPO FILE    
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
-      sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << 'EOF'
+      sudo tee "/etc/yum.repos.d/${TEAMNAME}.repo" > /dev/null <<EOF
 [${TEAMNAME}]
 baseurl = file:///s3repo/
 enabled = 1
@@ -102,10 +102,10 @@ EOF
 
   setupRepo() {
     # SETUP YUM REPO
-      runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo'
-      runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo && aws s3 sync s3://${TEAMNAME}repo . "
-      runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo/repo'
-      runit "Update /s3repo/repo" "sudo createrepo --update /s3repo"       
+      runit "Make /${TEAMNAME}/repo executable" "sudo chmod 777 /${TEAMNAME}"
+      runit "Sync down s3://${TEAMNAME}repo to /${TEAMNAME}" "cd /${TEAMNAME} && aws s3 sync s3://${TEAMNAME}repo . "
+      runit 'Make /${TEAMNAME} executable' 'sudo chmod 777 /${TEAMNAME}'
+      runit "Update /${TEAMNAME}" "sudo createrepo --update /${TEAMNAME}"       
       runit 'Rebuid YUM Repo Cache' 'yum clean all && yum makecache' 
       echo ''
   }
