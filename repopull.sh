@@ -70,13 +70,19 @@ EOF
   removeAWSCLI1() {
     echo "Removing AWS CLI 1......"
     for i in "${AWSVARS[@]}" ; do
-      if [[ -f "${i}" || -d "${i}" ]] ; then
-        echo "${i} was found."
-        echo "Removing ${i}......"
-          sudo rm -rf ${i}
-        echo "${i} has been uninstalled."
+      echo "Looking for File named ${i}."
+      if [[ -f "${i}" ]] ; then
+        echo "File ${i} was found."
+        echo "Remove ${i}" "sudo rm -rf ${i}"
       else
-        echo "${i} was not installed"
+        echo "File ${i} was not installed."
+        echo "Looking for Directory named ${i}."
+        if [[ -d "${i}" ]] ; then
+          echo "Directory ${i} was found."
+          echo "Remove ${i}" "sudo rm -rf ${i}"
+        else
+          echo "Directory ${i} was not installed."
+        fi
       fi
     done
     echo 'AWS CLI 1 Removed.'
