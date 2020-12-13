@@ -16,12 +16,10 @@
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
       sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << 'EOF'
 [${TEAMNAME}]
-baseurl = file:///s3repo/repo/
+baseurl = file:///s3repo/
 enabled = 1
 gpgcheck = 0
 name = ${TEAMNAME}
-repo_gpgcheck = 0
-s3_enabled=1
 EOF
       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
       runit "Removing whitespace from /etc/yum.repos.d/${TEAMNAME}.repo" "${SED} -i -e 's/[ \t]*//' /etc/yum.repos.d/${TEAMNAME}.repo"
@@ -101,11 +99,11 @@ EOF
 
   setupRepo() {
     # SETUP YUM REPO
+      runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo'
+      runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo && aws s3 sync s3://${TEAMNAME}repo . "
       runit 'Make /s3repo/repo executable' 'sudo chmod 777 /s3repo/repo'
-      runit "Sync down s3://${TEAMNAME}repo to /s3repo/repo" "cd /s3repo/repo && aws s3 sync s3://${TEAMNAME}repo . "           
-      runit 'Rebuid YUM Repo Cache' 'yum clean all' 
-      runit 'Update YUM Repolist' 'yum -y update'
-      runit 'Upgrade YUM Packages' 'yum -y upgrade'
+      runit "Update /s3repo/repo" "sudo createrepo --update /s3repo"       
+      runit 'Rebuid YUM Repo Cache' 'yum clean all && yum makecache' 
       echo ''
   }
 
