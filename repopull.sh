@@ -10,8 +10,8 @@
 
 ##  ---------- FUNCTIONS ----------  ##
 
-  CAT NEW YUM REPO FILE
   catRepoFile() {
+  # CAT NEW YUM REPO FILE    
     echo 'checking to see if /etc/yum.repos.d/${TEAMNAME}.repo is installed.....'
     if [ ! -f /etc/yum.repos.d/${TEAMNAME}.repo ] ; then
       sudo bash -c "cat > /etc/yum.repos.d/${TEAMNAME}.repo" << 'EOF'
@@ -22,7 +22,7 @@ gpgcheck = 0
 name = ${TEAMNAME}
 EOF
       echo "/etc/yum.repos.d/${TEAMNAME}.repo has been installed."
-      runit "Removing whitespace from /etc/yum.repos.d/${TEAMNAME}.repo" "${SED} -i -e 's/[ \t]*//' /etc/yum.repos.d/${TEAMNAME}.repo"
+      runit "Removing whitespace from /etc/yum.repos.d/${TEAMNAME}.repo" "sudo ${SED} -i -e 's/[ \t]*//' /etc/yum.repos.d/${TEAMNAME}.repo"
     else
       echo "/etc/yum.repos.d/${TEAMNAME}.repo already installed."
     fi
@@ -62,6 +62,7 @@ EOF
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       runit 'Unzip awscliv2.zip' 'unzip -o awscliv2.zip'
       runit 'Install aws' 'sudo ./aws/install --update'
+      runit 'Verify aws version' 'aws --version'
     fi
     echo ''
   }
@@ -93,6 +94,8 @@ EOF
 
   setupInfrastructure() {
     # SETUP LOCAL
+      runit 'Update and Upgrade YUM Caches' "sudo yum -y update && sudo yum -y upgrade"
+      runit 'Install createrepo and wget' 'sudo yum -y install createrepo wget'
       runit 'Create /s3repo/repo directory' 'sudo mkdir -p /s3repo/repo'
       echo ''
   }
@@ -129,8 +132,8 @@ EOF
 ##  ---------- MAIN ----------  ##
   clear
   getVars
+  setupInfrastructure  
   catRepoFile
-  setupInfrastructure
   removeAWSCLI1
   installAWSCLI2
   configureAWS
