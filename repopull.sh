@@ -133,6 +133,6 @@ EOF
   setupInfrastructure  
   catRepoFile
   removeAWSCLI1
-  # installAWSCLI2
-  # configureAWS
-  # setupRepo
+  installAWSCLI2
+  configureAWS
+  setupRepo
